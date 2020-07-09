@@ -1,0 +1,12 @@
+# Development tools
+.local/
+node_modules/
+package-lock.json
+
+# Do not keep compiled grammars
+grammars/*.json
+
+# Output
+out/
+*.log
+*.vsix
