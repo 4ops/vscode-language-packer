@@ -1,0 +1,124 @@
+name: Packer Variables
+scopeName: source.packervars
+fileTypes:
+  - packervars
+uuid: dbdb8363-f717-4da7-8a1e-969d71a0e700
+patterns:
+  - include: '#comments'
+  - match: \b([\-\w]+)(?:\s+)?(=)(?:\s+)?
+    captures:
+      1:
+        name: entity.name.packervars
+      2:
+        name: keyword.operator.assignment.packervars
+  - include: '#constants'
+  - include: '#strings'
+  - include: '#heredoc'
+  - include: '#punctuation'
+  - match: \S
+    name: invalid.illegal.packervars
+repository:
+  comments:
+    patterns:
+      - include: '#comment-line-number-sign'
+      - include: '#comment-line-double-slash'
+      - include: '#comment-block'
+  comment-line-number-sign:
+    name: comment.line.number-sign.packervars
+    begin: '#'
+    beginCaptures:
+      0:
+        name: punctuation.definition.comment.packervars
+    end: $
+  comment-line-double-slash:
+    name: comment.line.double-slash.packervars
+    begin: //
+    beginCaptures:
+      0:
+        name: punctuation.definition.comment.packervars
+    end: $
+  comment-block:
+    name: comment.block.packervars
+    begin: /\*
+    beginCaptures:
+      0:
+        name: punctuation.definition.comment.begin.packervars
+    end: \*/
+    endCaptures:
+      0:
+        name: punctuation.definition.comment.end.packervars
+  constants:
+    patterns:
+      - include: '#constants-decimal'
+      - include: '#constants-boolean'
+      - include: '#constants-language'
+  constants-decimal:
+    match: \b\d+(\.)?(\d+)?
+    name: constant.numeric.decimal.packervars
+    captures:
+      1:
+        name: meta.delimiter.decimal.period.packervars
+  constants-boolean:
+    match: \b(true|false)\b
+    name: constant.language.boolean.$1.packervars
+  constants-language:
+    match: \b(null)\b
+    name: constant.language.$1.packervars
+  strings:
+    begin: '"'
+    beginCaptures:
+      0:
+        name: punctuation.definition.string.begin.packervars
+    end: '"'
+    endCaptures:
+      0:
+        name: punctuation.definition.string.end.packervars
+    name: string.quoted.double.packervars
+    patterns:
+      - include: '#escape-char'
+  heredoc:
+    begin: <<[\-]?(\w+)
+    beginCaptures:
+      1:
+        name: punctuation.definition.string.template.begin.$1.packervars
+    end: \1
+    endCaptures:
+      0:
+        name: punctuation.definition.string.template.end.packervars
+    name: string.unquoted.here-doc.packervars
+  escape-char:
+    match: \\\"
+    name: constant.character.escape.packervars
+  punctuation:
+    patterns:
+      - include: '#punctuation-comma'
+      - include: '#braces-round'
+      - include: '#braces-square'
+      - include: '#brackets'
+  punctuation-comma:
+    match: ','
+    name: punctuation.separator.comma.packervars
+  braces-round:
+    begin: \(
+    end: \)
+    name: meta.brace.round.packervars
+    patterns:
+      - include: $self
+  braces-square:
+    begin: \[
+    end: \]
+    name: meta.brace.square.packervars
+    patterns:
+      - include: $self
+  brackets:
+    begin: '{'
+    beginCaptures:
+      0:
+        name: punctuation.definition.block.begin.packervars
+    end: '}'
+    endCaptures:
+      0:
+        name: punctuation.definition.block.end.packervars
+    name: meta.block.packervars
+    patterns:
+      - include: $self
