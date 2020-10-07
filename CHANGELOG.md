@@ -2,7 +2,7 @@
 
 ## 0.2.0
 
-- Added support for Packer variables files: `.pkrvars.hcl` (GH-2)
+- Added support for Packer variables files: `.pkrvars.hcl` ([#2](/4ops/vscode-language-packer/issues/2))
 
 ## 0.1.1
 
