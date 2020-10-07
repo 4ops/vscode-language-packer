@@ -1,344 +1,362 @@
 name: Packer
 scopeName: source.packer
-fileTypes: [pkr.hcl]
+fileTypes:
+  - pkr.hcl
 uuid: fbea22a0-4cdf-471b-9962-0ebcdb5a4b9d
-
 patterns:
-  - include: "#comments"
-
-  - name: "meta.locals.packer"
-    begin: '\b(locals)([\w\-\"$])?(?:\s+)?({)'
+  - include: '#comments'
+  - name: meta.locals.packer
+    begin: \b(locals)([\w\-\"$])?(?:\s+)?({)
     beginCaptures:
-      1: { name: keyword.declaration.$1.packer }
-      2: { name: invalid.illegal.keyword.$1.packer }
-      3: { name: punctuation.declaration.block.begin.packer }
-    end: "}"
-    endCaptures:
-      0: { name: punctuation.declaration.block.end.packer }
-    patterns:
-      - match: '\b([\-\w]+)(?:\s+)?(=)(?!=|>|<)'
-        captures:
-          1: { name: variable.other.readwrite.packer }
-          2: { name: keyword.operator.assignment.packer }
-      - include: "#definition-right"
-
-  - name: "meta.variable.packer"
-    begin: '\b(variable)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
-    beginCaptures:
-      1: { name: keyword.declaration.$1.packer }
-      2: { name: invalid.illegal.keyword.$1.packer }
+      1:
+        name: keyword.declaration.$1.packer
+      2:
+        name: invalid.illegal.keyword.$1.packer
       3:
-        { name: string.quoted.double.packer punctuation.definition.string.begin.packer }
-      4: { name: string.quoted.double.packer entity.name.$1.packer }
-      5: { name: string.quoted.double.packer punctuation.definition.string.end.packer }
-      6: { name: punctuation.declaration.block.begin.packer }
-    end: "}"
+        name: punctuation.declaration.block.begin.packer
+    end: '}'
     endCaptures:
-      0: { name: punctuation.declaration.block.end.packer }
+      0:
+        name: punctuation.declaration.block.end.packer
     patterns:
-      - include: "#comments"
-      - match: '\b(type|default|description)(?:\s+)?(=)(?:\s+)?'
+      - match: \b([\-\w]+)(?:\s+)?(=)(?!=|>|<)
         captures:
-          1: { name: meta.keyword.$1.packer }
-          2: { name: keyword.operator.assignment.packer }
-      - match: '\b(string|number|bool|list|map|set|object|touple|any)\b'
-        captures:
-          1: { name: meta.keyword.$1.packer }
-      - include: "#definition-right"
-      - match: '\S'
-        name: invalid.illegal.keyword.variable.packer
-
-  - name: "meta.source.packer"
-    begin: '\b(source)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+          1:
+            name: variable.other.readwrite.packer
+          2:
+            name: keyword.operator.assignment.packer
+      - include: '#definition-right'
+  - name: meta.variable.packer
+    begin: \b(variable)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)
     beginCaptures:
-      1: { name: keyword.declaration.$1.packer }
-      2: { name: invalid.illegal.keyword.$1.packer }
+      1:
+        name: keyword.declaration.$1.packer
+      2:
+        name: invalid.illegal.keyword.$1.packer
       3:
-        { name: string.quoted.double.packer punctuation.definition.string.begin.packer }
-      4: { name: string.quoted.double.packer entity.type.$1.packer }
-      5: { name: string.quoted.double.packer punctuation.definition.string.end.packer }
+        name: string.quoted.double.packer punctuation.definition.string.begin.packer
+      4:
+        name: string.quoted.double.packer entity.name.$1.packer
+      5:
+        name: string.quoted.double.packer punctuation.definition.string.end.packer
       6:
-        { name: string.quoted.double.packer punctuation.definition.string.begin.packer }
-      7: { name: string.quoted.double.packer entity.name.$1.packer }
-      8: { name: string.quoted.double.packer punctuation.definition.string.end.packer }
-      9: { name: punctuation.declaration.block.begin.packer }
-    end: "}"
+        name: punctuation.declaration.block.begin.packer
+    end: '}'
     endCaptures:
-      0: { name: punctuation.declaration.block.end.packer }
+      0:
+        name: punctuation.declaration.block.end.packer
     patterns:
-      - include: "#comments"
-      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+      - include: '#comments'
+      - match: \b(type|default|description)(?:\s+)?(=)(?:\s+)?
         captures:
-          1: { name: support.source.attribute.packer }
-          2: { name: keyword.operator.assignment.packer }
-      # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
-      #   captures:
-      #     1: { name: keyword.control.loop.packer }
-      - include: "#definition-right"
-
-  - name: "meta.build.packer"
-    begin: '\b(build)([\w\-\"$])?(?:\s+)?(?:\s+)?({)'
+          1:
+            name: meta.keyword.$1.packer
+          2:
+            name: keyword.operator.assignment.packer
+      - match: \b(string|number|bool|list|map|set|object|touple|any)\b
+        captures:
+          1:
+            name: meta.keyword.$1.packer
+      - include: '#definition-right'
+      - match: \S
+        name: invalid.illegal.keyword.variable.packer
+  - name: meta.source.packer
+    begin: \b(source)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)
     beginCaptures:
-      1: { name: keyword.declaration.$1.packer }
-      2: { name: invalid.illegal.keyword.$1.packer }
-      3: { name: punctuation.declaration.block.begin.packer }
-    end: "}"
+      1:
+        name: keyword.declaration.$1.packer
+      2:
+        name: invalid.illegal.keyword.$1.packer
+      3:
+        name: string.quoted.double.packer punctuation.definition.string.begin.packer
+      4:
+        name: string.quoted.double.packer entity.type.$1.packer
+      5:
+        name: string.quoted.double.packer punctuation.definition.string.end.packer
+      6:
+        name: string.quoted.double.packer punctuation.definition.string.begin.packer
+      7:
+        name: string.quoted.double.packer entity.name.$1.packer
+      8:
+        name: string.quoted.double.packer punctuation.definition.string.end.packer
+      9:
+        name: punctuation.declaration.block.begin.packer
+    end: '}'
     endCaptures:
-      0: { name: punctuation.declaration.block.end.packer }
+      0:
+        name: punctuation.declaration.block.end.packer
     patterns:
-      - include: "#comments"
-      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+      - include: '#comments'
+      - match: \b([\-\w]+)(?:\s+)?(=)(?:\s+)?
         captures:
-          1: { name: support.build.attribute.packer }
-          2: { name: keyword.operator.assignment.packer }
+          1:
+            name: support.source.attribute.packer
+          2:
+            name: keyword.operator.assignment.packer
       # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
       #   captures:
       #     1: { name: keyword.control.loop.packer }
-      - include: "#definition-right"
-
-  - include: "#invalid"
-
+      - include: '#definition-right'
+  - name: meta.build.packer
+    begin: \b(build)([\w\-\"$])?(?:\s+)?(?:\s+)?({)
+    beginCaptures:
+      1:
+        name: keyword.declaration.$1.packer
+      2:
+        name: invalid.illegal.keyword.$1.packer
+      3:
+        name: punctuation.declaration.block.begin.packer
+    end: '}'
+    endCaptures:
+      0:
+        name: punctuation.declaration.block.end.packer
+    patterns:
+      - include: '#comments'
+      - match: \b([\-\w]+)(?:\s+)?(=)(?:\s+)?
+        captures:
+          1:
+            name: support.build.attribute.packer
+          2:
+            name: keyword.operator.assignment.packer
+      # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+      #   captures:
+      #     1: { name: keyword.control.loop.packer }
+      - include: '#definition-right'
+  - include: '#invalid'
 repository:
   definition-right:
     patterns:
-      - include: "#comments"
-      - include: "#support-path"
-      - include: "#support-variable"
-      - include: "#support-local"
-      - include: "#support-function-numeric"
-      - include: "#support-function-string"
-      - include: "#support-function-collection"
-      - include: "#support-function-encoding"
-      - include: "#support-function-filesystem"
-      - include: "#support-function-datetime"
-      - include: "#support-function-crypto"
-      - include: "#support-function-network"
-      - include: "#support-function-conversion"
-      - include: "#constants-decimal"
-      - include: "#constants-boolean"
-      - include: "#constants-language"
-      - include: "#punctuation-comma"
-      - include: "#punctuation-accessor"
-      - include: "#keyword-ternary"
-      - include: "#keyword-comparison"
-      - include: "#keyword-conditional"
-      - include: "#keyword-loop"
-      - include: "#braces-round"
-      - include: "#braces-square"
-      - include: "#strings"
-      - include: "#heredoc"
-      - include: "#blocks"
-
+      - include: '#comments'
+      - include: '#support-path'
+      - include: '#support-variable'
+      - include: '#support-local'
+      - include: '#support-function-numeric'
+      - include: '#support-function-string'
+      - include: '#support-function-collection'
+      - include: '#support-function-encoding'
+      - include: '#support-function-filesystem'
+      - include: '#support-function-datetime'
+      - include: '#support-function-crypto'
+      - include: '#support-function-network'
+      - include: '#support-function-conversion'
+      - include: '#constants-decimal'
+      - include: '#constants-boolean'
+      - include: '#constants-language'
+      - include: '#punctuation-comma'
+      - include: '#punctuation-accessor'
+      - include: '#keyword-ternary'
+      - include: '#keyword-comparison'
+      - include: '#keyword-conditional'
+      - include: '#keyword-loop'
+      - include: '#braces-round'
+      - include: '#braces-square'
+      - include: '#strings'
+      - include: '#heredoc'
+      - include: '#blocks'
   support-path:
-    match: '(?<!\.)\b(path)(\.)(\w+)\b'
+    match: (?<!\.)\b(path)(\.)(\w+)\b
     captures:
-      1: { name: support.class.path.packer }
-      2: { name: punctuation.accessor.packer }
-      3: { name: support.path.$3.packer }
-
+      1:
+        name: support.class.path.packer
+      2:
+        name: punctuation.accessor.packer
+      3:
+        name: support.path.$3.packer
   support-variable:
-    match: '(?<!\.)\b(var)(\.)(\w+)\b'
+    match: (?<!\.)\b(var)(\.)(\w+)\b
     captures:
-      1: { name: support.class.variable.packer }
-      2: { name: punctuation.accessor.packer }
-      3: { name: support.variable.$3.packer }
-
+      1:
+        name: support.class.variable.packer
+      2:
+        name: punctuation.accessor.packer
+      3:
+        name: support.variable.$3.packer
   support-local:
-    match: '(?<!\.)\b(local)(\.)(\w+)\b'
+    match: (?<!\.)\b(local)(\.)(\w+)\b
     captures:
-      1: { name: support.class.local.packer }
-      2: { name: punctuation.accessor.packer }
-      3: { name: support.local.$3.packer }
-
+      1:
+        name: support.class.local.packer
+      2:
+        name: punctuation.accessor.packer
+      3:
+        name: support.local.$3.packer
   support-function-numeric:
-    match: '(?<!\.)\b(abs|ceil|floor|log|max|min|pow|signum|parseint)\b(?=\()'
+    match: (?<!\.)\b(abs|ceil|floor|log|max|min|pow|signum|parseint)\b(?=\()
     name: support.function.builtin.numeric.packer
-
   support-function-string:
-    match: '(?<!\.)\b(chomp|formatlist|format|indent|join|lower|regexall|regex|replace|split|strrev|substr|title|trimspace|trimprefix|trimsuffix|trim|upper)\b(?=\()'
+    match: (?<!\.)\b(chomp|formatlist|format|indent|join|lower|regexall|regex|replace|split|strrev|substr|title|trimspace|trimprefix|trimsuffix|trim|upper)\b(?=\()
     name: support.function.builtin.string.packer
-
   support-function-collection:
     name: support.function.builtin.collection.packer
-    match: '(?<!\.)\b(chunklist|coalescelist|coalesce|compact|concat|contains|distinct|element|flatten|index|keys|length|list|lookup|map|matchkeys|merge|range|reverse|setintersection|setproduct|setunion|slice|sort|transpose|values|zipmap)\b(?=\()'
-
+    match: (?<!\.)\b(chunklist|coalescelist|coalesce|compact|concat|contains|distinct|element|flatten|index|keys|length|list|lookup|map|matchkeys|merge|range|reverse|setintersection|setproduct|setunion|slice|sort|transpose|values|zipmap)\b(?=\()
   support-function-encoding:
     name: support.function.builtin.encoding.packer
-    match: '(?<!\.)\b(base64decode|base64encode|base64gzip|csvdecode|jsondecode|jsonencode|urlencode|yamldecode|yamlencode)\b(?=\()'
-
+    match: (?<!\.)\b(base64decode|base64encode|base64gzip|csvdecode|jsondecode|jsonencode|urlencode|yamldecode|yamlencode)\b(?=\()
   support-function-filesystem:
     name: support.function.builtin.filesystem.packer
-    match: '(?<!\.)\b(abspath|dirname|pathexpand|basename|fileexists|filebase64|fileset|templatefile|file)\b(?=\()'
-
+    match: (?<!\.)\b(abspath|dirname|pathexpand|basename|fileexists|filebase64|fileset|templatefile|file)\b(?=\()
   support-function-datetime:
     name: support.function.builtin.datetime.packer
-    match: '(?<!\.)\b(formatdate|timeadd|timestamp)\b(?=\()'
-
+    match: (?<!\.)\b(formatdate|timeadd|timestamp)\b(?=\()
   support-function-crypto:
     name: support.function.builtin.crypto.packer
-    match: '(?<!\.)\b(base64sha256|base64sha512|bcrypt|filebase64sha256|filebase64sha512|filemd5|filesha1|filesha256|filesha512|md5|rsadecrypt|sha1|sha256|sha512|uuidv5|uuid)\b(?=\()'
-
+    match: (?<!\.)\b(base64sha256|base64sha512|bcrypt|filebase64sha256|filebase64sha512|filemd5|filesha1|filesha256|filesha512|md5|rsadecrypt|sha1|sha256|sha512|uuidv5|uuid)\b(?=\()
   support-function-network:
     name: support.function.builtin.network.packer
-    match: '(?<!\.)\b(cidrhost|cidrnetmask|cidrsubnets|cidrsubnet)\b(?=\()'
-
+    match: (?<!\.)\b(cidrhost|cidrnetmask|cidrsubnets|cidrsubnet)\b(?=\()
   support-function-conversion:
     name: support.function.builtin.conversion.packer
-    match: '(?<!\.)\b(tobool|tolist|tomap|tonumber|toset|tostring)\b(?=\()'
-
+    match: (?<!\.)\b(tobool|tolist|tomap|tonumber|toset|tostring)\b(?=\()
   constants-decimal:
-    match: '\b\d+(\.)?(\d+)?'
+    match: \b\d+(\.)?(\d+)?
     name: constant.numeric.decimal.packer
     captures:
-      1: { name: meta.delimiter.decimal.period.packer }
-
+      1:
+        name: meta.delimiter.decimal.period.packer
   constants-boolean:
-    match: '\b(true|false)\b'
+    match: \b(true|false)\b
     name: constant.language.boolean.$1.packer
-
   constants-language:
-    match: '\b(null)\b'
+    match: \b(null)\b
     name: constant.language.$1.packer
-
   punctuation-comma:
-    match: ","
+    match: ','
     name: punctuation.separator.comma.packer
-
   punctuation-accessor:
-    match: '(?<=\w)\.(?=\w)'
+    match: (?<=\w)\.(?=\w)
     name: punctuation.accessor.packer
-
   keyword-ternary:
     match: '\?|:'
     name: keyword.operator.ternary.packer
-
   keyword-comparison:
-    match: "~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>]"
+    match: ~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>]
     name: keyword.operator.comparison.packer
-
   keyword-conditional:
-    match: '\b(if|else|endif)\b'
+    match: \b(if|else|endif)\b
     name: keyword.control.conditional.packer
-
   keyword-loop:
-    match: '\b(for|in|endfor)\b'
+    match: \b(for|in|endfor)\b
     name: keyword.control.loop.packer
-
   braces-round:
-    match: '\(|\)'
+    match: \(|\)
     name: meta.brace.round.packer
-
   braces-square:
-    match: '\[|\]'
+    match: \[|\]
     name: meta.brace.square.packer
-
   blocks:
-    begin: "{"
+    begin: '{'
     beginCaptures:
-      0: { name: punctuation.definition.block.begin.packer }
-    end: "}"
+      0:
+        name: punctuation.definition.block.begin.packer
+    end: '}'
     endCaptures:
-      0: { name: punctuation.definition.block.end.packer }
+      0:
+        name: punctuation.definition.block.end.packer
     name: meta.block.packer
     patterns:
-      - include: "#definition-right"
-      - include: "#blocks"
-
+      - include: '#definition-right'
+      - include: '#blocks'
   escape-char:
-    match: '\\\"'
+    match: \\\"
     name: constant.character.escape.packer
-
   string-interpolation:
-    begin: '\${'
+    begin: \${
     beginCaptures:
-      0: { name: punctuation.definition.template-expression.begin.packer }
-    end: "}"
+      0:
+        name: punctuation.definition.template-expression.begin.packer
+    end: '}'
     endCaptures:
-      0: { name: punctuation.definition.template-expression.end.packer }
+      0:
+        name: punctuation.definition.template-expression.end.packer
     name: meta.template.expression.packer meta.embedded.line.packer
     patterns:
-      - include: "#definition-right"
-
+      - include: '#definition-right'
   string-templates:
-    begin: "%{"
+    begin: '%{'
     beginCaptures:
-      0: { name: punctuation.definition.template-expression.begin.packer }
-    end: "}"
+      0:
+        name: punctuation.definition.template-expression.begin.packer
+    end: '}'
     endCaptures:
-      0: { name: punctuation.definition.template-expression.end.packer }
+      0:
+        name: punctuation.definition.template-expression.end.packer
     name: meta.template.expression.packer meta.embedded.line.packer
     patterns:
-      - include: "#definition-right"
-
+      - include: '#definition-right'
   strings:
     begin: '"'
     beginCaptures:
-      0: { name: punctuation.definition.string.template.begin.packer }
+      0:
+        name: punctuation.definition.string.template.begin.packer
     end: '"'
     endCaptures:
-      0: { name: punctuation.definition.string.template.end.packer }
+      0:
+        name: punctuation.definition.string.template.end.packer
     name: string.template.packer
     patterns:
-      - include: "#escape-char"
-      - match: '\$\${'
-      - include: "#string-interpolation"
-      - match: "%%{"
-      - include: "#string-templates"
-
+      - include: '#escape-char'
+      - match: \$\${
+      - include: '#string-interpolation'
+      - match: '%%{'
+      - include: '#string-templates'
   heredoc:
-    begin: '<<[\-]?(\w+)'
+    begin: <<[\-]?(\w+)
     beginCaptures:
-      1: { name: punctuation.definition.string.template.begin.$1.packer }
-    end: '\1'
+      1:
+        name: punctuation.definition.string.template.begin.$1.packer
+    end: \1
     endCaptures:
-      0: { name: punctuation.definition.string.template.end.packer }
+      0:
+        name: punctuation.definition.string.template.end.packer
     name: string.unquoted.here-doc.packer
     patterns:
-      - match: '\$\${'
-      - include: "#string-interpolation"
-      - match: "%%{"
-      - include: "#string-templates"
-
+      - match: \$\${
+      - include: '#string-interpolation'
+      - match: '%%{'
+      - include: '#string-templates'
   version:
-    match: '\b(version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+    match: \b(version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")
     name: meta.version.packer
     captures:
-      1: { name: storage.modifier.version.packer }
-      2: { name: keyword.operator.assignment.packer }
+      1:
+        name: storage.modifier.version.packer
+      2:
+        name: keyword.operator.assignment.packer
       3:
-        { name: string.quoted.double.packer punctuation.definition.string.begin.packer }
-      4: { name: string.quoted.double.packer }
-      5: { name: string.quoted.double.packer punctuation.definition.string.end.packer }
-
+        name: string.quoted.double.packer punctuation.definition.string.begin.packer
+      4:
+        name: string.quoted.double.packer
+      5:
+        name: string.quoted.double.packer punctuation.definition.string.end.packer
   comment-line-number-sign:
     name: comment.line.number-sign.packer
-    begin: "#"
+    begin: '#'
     beginCaptures:
-      0: { name: punctuation.definition.comment.packer }
-    end: "$"
-
+      0:
+        name: punctuation.definition.comment.packer
+    end: $
   comment-line-double-slash:
     name: comment.line.double-slash.packer
-    begin: "//"
+    begin: //
     beginCaptures:
-      0: { name: punctuation.definition.comment.packer }
-    end: "$"
-
+      0:
+        name: punctuation.definition.comment.packer
+    end: $
   comment-block:
     name: comment.block.packer
-    begin: '/\*'
+    begin: /\*
     beginCaptures:
-      0: { name: punctuation.definition.comment.begin.packer }
-    end: '\*/'
+      0:
+        name: punctuation.definition.comment.begin.packer
+    end: \*/
     endCaptures:
-      0: { name: punctuation.definition.comment.end.packer }
-
+      0:
+        name: punctuation.definition.comment.end.packer
   comments:
     patterns:
-      - include: "#comment-line-number-sign"
-      - include: "#comment-line-double-slash"
-      - include: "#comment-block"
-
+      - include: '#comment-line-number-sign'
+      - include: '#comment-line-double-slash'
+      - include: '#comment-block'
   invalid:
     name: invalid.illegal.packer
     match: \S
