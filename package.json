@@ -68,7 +68,7 @@
 	"scripts": {
 		"ci-build": "vsce package",
 		"build": "vsce package",
-		"compile-packer": "yyq eval grammars/packer.yaml --tojson > grammars/packer.json",
+		"compile-packer": "yq eval grammars/packer.yaml --tojson > grammars/packer.json",
 		"compile-packervars": "yq eval grammars/packervars.yaml --tojson > grammars/packervars.json",
 		"compile": "npm run compile-packer && npm run compile-packervars",
 		"pretest": "npm run compile -s",
