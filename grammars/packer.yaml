@@ -5,6 +5,48 @@ fileTypes:
 uuid: fbea22a0-4cdf-471b-9962-0ebcdb5a4b9d
 patterns:
   - include: '#comments'
+  - name: "meta.packer.packer"
+    begin: '\b(packer)([\w\-\"$])?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.packer }
+      2: { name: invalid.illegal.keyword.$1.packer }
+      3: { name: punctuation.declaration.block.begin.packer }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.packer }
+    patterns:
+      - include: "#comments"
+      - include: "#version"
+      - match: '\b(required_version)(?:\s+)?(=)(?:\s+)?(")([^$"]+)?(")'
+        name: meta.terraform.required_version.packer
+        captures:
+          # 1: { name: storage.modifier.required_version.packer }
+          2: { name: keyword.operator.assignment.packer }
+          3:
+            {
+              name: string.quoted.double.packer punctuation.definition.string.begin.packer,
+            }
+          4: { name: string.quoted.double.packer }
+          5:
+            {
+              name: string.quoted.double.packer punctuation.definition.string.end.packer,
+            }
+      - name: "meta.terraform.required_plugins.packer"
+        begin: '\b(required_plugins)([\w\-\"$])?(?:\s+)?({)'
+        beginCaptures:
+          1: { name: keyword.declaration.$1.packer }
+          2: { name: invalid.illegal.keyword.$1.packer }
+          3: { name: punctuation.declaration.block.begin.packer }
+        end: "}"
+        endCaptures:
+          0: { name: punctuation.definition.block.end.packer }
+        patterns:
+          - include: "#comments"
+          - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+            captures:
+              1: { name: support.provider.attribute.packer }
+              2: { name: keyword.operator.assignment.packer }
+          - include: "#definition-right"
   - name: meta.locals.packer
     begin: \b(locals)([\w\-\"$])?(?:\s+)?({)
     beginCaptures:
@@ -60,6 +102,33 @@ patterns:
       - include: '#definition-right'
       - match: \S
         name: invalid.illegal.keyword.variable.packer
+  - name: "meta.data.packer"
+    begin: '\b(data)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)'
+    beginCaptures:
+      1: { name: keyword.declaration.$1.packer }
+      2: { name: invalid.illegal.keyword.$1.packer }
+      3:
+        { name: string.quoted.double.packer punctuation.definition.string.begin.packer }
+      4: { name: string.quoted.double.packer entity.type.$1.packer }
+      5: { name: string.quoted.double.packer punctuation.definition.string.end.packer }
+      6:
+        { name: string.quoted.double.packer punctuation.definition.string.begin.packer }
+      7: { name: string.quoted.double.packer entity.name.$1.packer }
+      8: { name: string.quoted.double.packer punctuation.definition.string.end.packer }
+      9: { name: punctuation.declaration.block.begin.packer }
+    end: "}"
+    endCaptures:
+      0: { name: punctuation.declaration.block.end.packer }
+    patterns:
+      - include: "#comments"
+      - match: '\b([\-\w]+)(?:\s+)?(=)(?:\s+)?'
+        captures:
+          1: { name: support.data.attribute.packer }
+          2: { name: keyword.operator.assignment.packer }
+      # - match: '\b(for_each|dynamic|iterator|labels|content)\b'
+      #   captures:
+      #     1: { name: keyword.control.loop.packer }
+      - include: "#definition-right"
   - name: meta.source.packer
     begin: \b(source)([\w\-\"$])?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?(")?([^\"\n]+)?(")?(?:\s+)?({)
     beginCaptures:
@@ -130,6 +199,7 @@ repository:
       - include: '#support-path'
       - include: '#support-variable'
       - include: '#support-local'
+      - include: "#support-data"
       - include: '#support-function-numeric'
       - include: '#support-function-string'
       - include: '#support-function-collection'
@@ -180,6 +250,14 @@ repository:
         name: punctuation.accessor.packer
       3:
         name: support.local.$3.packer
+  support-data:
+    match: '(?<!\.)\b(data)(\.)(\w+)(\.)?(\w+)?\b'
+    captures:
+      1: { name: support.class.data.packer }
+      2: { name: punctuation.accessor.packer }
+      3: { name: support.data.$3.packer }
+      4: { name: punctuation.accessor.packer }
+      5: { name: support.data.$3.attribute.packer }
   support-function-numeric:
     match: (?<!\.)\b(abs|ceil|floor|log|max|min|pow|signum|parseint)\b(?=\()
     name: support.function.builtin.numeric.packer
