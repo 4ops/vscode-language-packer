@@ -82,7 +82,7 @@
 		"version": "npm run build -s"
 	},
 	"devDependencies": {
-		"vsce": "^1.75.0"
+		"vsce": "^1.99.0"
 	},
 	"dependencies": {}
 }
