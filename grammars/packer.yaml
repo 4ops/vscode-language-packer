@@ -307,7 +307,7 @@ repository:
     match: '\?|:'
     name: keyword.operator.ternary.packer
   keyword-comparison:
-    match: ~>|>=|<=|==|!=|[^<]<[^<]|[^>]>[^>]
+    match: ~>|>=|<=|==|!=|[^<"]<[^<"]|[^>"]>[^>"]
     name: keyword.operator.comparison.packer
   keyword-conditional:
     match: \b(if|else|endif)\b
